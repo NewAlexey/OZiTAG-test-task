@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { IOptionItem } from '../interfaces/option-interface';
-import getOptionsList from '../shared/get-list-options-content';
-import getRandomBoolean from '../shared/get-random-boolean';
-import setChildrenToItems from '../shared/set-children-to-items';
-import setIsNeedArrowForOpen from '../shared/set-is-need-arrow';
-import BaseComponent from '../utils/base-component';
+import getOptionsList from '../utils/get-list-options-content';
+import getNextValueForOptionData from '../utils/get-next-value-for-option-data';
+import getRandomBoolean from '../utils/get-random-boolean';
+import setChildrenToItems from '../utils/set-children-to-items';
+import setIsNeedArrowForOpen from '../utils/set-is-need-arrow';
+import BaseComponent from './base-component';
 
 export default class SelectComponent extends BaseComponent {
   public isShownOptions: boolean;
@@ -85,9 +86,10 @@ export default class SelectComponent extends BaseComponent {
 
   private setCheckedOptions(): void {
     const optionsList = [...this.element.querySelectorAll('option')];
+    optionsList.shift();
     optionsList.forEach((option, index) => {
       if (option.getAttribute('selected') !== null && index !== 0) {
-        this.checkedOptions.add(option.value);
+        this.checkedOptions.add(String(this.allOptionsItems[index]?.dataValue));
         option.removeAttribute('selected');
       }
     });
@@ -102,12 +104,12 @@ export default class SelectComponent extends BaseComponent {
       newElement.isOpen = true;
       newElement.isShown = true;
       newElement.dataLevel = +(option.getAttribute('data-level') as string);
-      newElement.dataValue = +option.value;
+      newElement.dataValue = +`${+option.value}${getNextValueForOptionData()}`;
       newElement.childrenIndex = [];
 
       return newElement;
     });
-    optionsList.shift();
+
     const updateListItemForArrows = setIsNeedArrowForOpen(optionsList);
     const updateListItemWithChildren = setChildrenToItems(updateListItemForArrows);
 

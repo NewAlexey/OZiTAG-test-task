@@ -1,12 +1,11 @@
-/* eslint-disable no-alert */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
-import ButtonsComponent from './components/buttons';
-import HeaderComponent from './components/header';
-import SelectComponent from './components/select';
+/* eslint-disable no-alert */
+import ButtonsComponent from './components/buttons-component';
+import HeaderComponent from './components/header-component';
+import SelectComponent from './components/select-component';
 import { IOptionItem } from './interfaces/option-interface';
-import createHTMLElement from './shared/create-HTML-element';
-import getOptionValue from './shared/get-option-value';
+import createHTMLElement from './utils/create-HTML-element';
+import getOptionValue from './utils/get-option-value';
 
 export default class App {
   private headerListComponent: HeaderComponent;
@@ -52,15 +51,29 @@ export default class App {
     );
     (this.headerListComponent.element.querySelector('.selected-elements') as HTMLSelectElement).addEventListener(
       'click',
-      this.showOptionsListOnScreen.bind(this)
+      this.setAllOptionIsShowAndShowOnScreen.bind(this)
     );
+  }
+
+  private setAllOptionIsShowAndShowOnScreen(): void {
+    const allOptionsInShownMode = this.selectComponent.allOptionsItems.map((option) => {
+      const updatedOptionElem = option;
+      updatedOptionElem.isShown = true;
+      updatedOptionElem.isOpen = true;
+
+      return updatedOptionElem;
+    });
+
+    this.selectComponent.allOptionsItems = [...allOptionsInShownMode];
+
+    this.showOptionsListOnScreen();
   }
 
   private showOptionsListOnScreen(): void {
     const optionsList = this.selectComponent.getAllOptionsAsString();
 
     if (optionsList) {
-      this.optionsListContainer = createHTMLElement('div', '', 'select-information-container');
+      this.optionsListContainer = createHTMLElement('div', '', 'select-information-container') as HTMLElement;
       this.contentContainer.append(this.optionsListContainer);
       this.optionsListContainer.addEventListener('click', this.setCheckedOptionHandleClick.bind(this));
       this.optionsListContainer.innerHTML = optionsList;
@@ -76,17 +89,25 @@ export default class App {
   }
 
   private addListenersToButtons(): void {
-    this.rootElement.querySelector('.button-apply')?.addEventListener('click', this.funcHandleClickApplyButton);
-    this.rootElement.querySelector('.button-clear')?.addEventListener('click', this.funcHandleClickClearButton);
+    this.buttonsComponent.element
+      .querySelector('.button-apply')
+      ?.addEventListener('click', this.funcHandleClickApplyButton);
+    this.buttonsComponent.element
+      .querySelector('.button-clear')
+      ?.addEventListener('click', this.funcHandleClickClearButton);
   }
 
   private removeListenersToButtons(): void {
-    this.rootElement.querySelector('.button-apply')?.removeEventListener('click', this.funcHandleClickApplyButton);
-    this.rootElement.querySelector('.button-clear')?.removeEventListener('click', this.funcHandleClickClearButton);
+    this.buttonsComponent.element
+      .querySelector('.button-apply')
+      ?.removeEventListener('click', this.funcHandleClickApplyButton);
+    this.buttonsComponent.element
+      .querySelector('.button-clear')
+      ?.removeEventListener('click', this.funcHandleClickClearButton);
   }
 
   private handleClickApplyButton(): void {
-    alert('Все выбранные элементы приняты');
+    alert(`Следующие выбранные элементы - ${[...this.selectComponent.checkedOptions].join(', ')} - приняты`);
     this.selectComponent.isShownOptions = false;
     this.optionsListContainer?.removeEventListener('click', this.setCheckedOptionHandleClick.bind(this));
     this.optionsListContainer?.remove();
@@ -96,12 +117,12 @@ export default class App {
   }
 
   private clearCheckedOptions(): void {
-    const inputsList = [...this.rootElement.querySelectorAll('input')];
+    const inputsList = [...this.contentContainer.querySelectorAll('input')];
     inputsList.forEach((input) => {
       input.checked = false;
     });
 
-    const labelsList = [...this.rootElement.querySelectorAll('label')];
+    const labelsList = [...this.contentContainer.querySelectorAll('label')];
     labelsList.forEach((label) => {
       label.classList.remove('background-selected-option');
     });
@@ -153,7 +174,10 @@ export default class App {
     const optionsList = [...this.selectComponent.allOptionsItems];
     const updatedOptionsList = optionsList.map((element) => {
       if (element.dataValue === +optionValue) {
-        element.isOpen = isOpen;
+        const updatedElem = element;
+        updatedElem.isOpen = isOpen;
+
+        return element;
       }
 
       return element;

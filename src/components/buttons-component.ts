@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import BaseComponent from '../utils/base-component';
+import BaseComponent from './base-component';
 
 export default class ButtonsComponent extends BaseComponent {
   public constructor() {

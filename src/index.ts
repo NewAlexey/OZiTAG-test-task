@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 import App from './app';
-import ButtonAddNewSelectComponent from './components/button-add-new-component';
+import ButtonAddNewSelectComponent from './components/button-add-new-select-component';
 import './style.scss';
 
 function addNewComponent(): void {

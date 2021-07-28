@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import BaseComponent from '../utils/base-component';
+import BaseComponent from './base-component';
 
 export default class ButtonAddNewSelectComponent extends BaseComponent {
   public constructor(private readonly rootElement: HTMLElement) {
