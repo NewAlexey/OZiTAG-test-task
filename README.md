@@ -18,5 +18,5 @@
 3. Возможность создать несколько независимых компонентов - есть. Добавлена кнопка для добавления последующих независимых компонентов с индивидуальной логикой. 
 
 #### Дополнительная информация
-Файлы проекта находятся на dev ветке - https://github.com/NewAlexey/OZiTAG-test-task/tree/dev
+Файлы проекта находятся на dev ветке - https://github.com/NewAlexey/OZiTAG-test-task/tree/dev  
 Файлы рабочей версии приложения находятся на ветке main - https://github.com/NewAlexey/OZiTAG-test-task/tree/main
