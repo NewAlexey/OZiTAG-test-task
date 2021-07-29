@@ -1,9 +1,10 @@
 export interface IOptionItem {
   option: HTMLOptionElement;
   isOpen: boolean;
+  isChecked: boolean;
   isArrowNeeded: boolean;
   isShown: boolean;
   dataLevel: number;
-  dataValue: number;
+  dataValue: string;
   childrenIndex: number[] | null;
 }

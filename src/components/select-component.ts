@@ -5,6 +5,7 @@ import getNextValueForOptionData from '../utils/get-next-value-for-option-data';
 import getRandomBoolean from '../utils/get-random-boolean';
 import setChildrenToItems from '../utils/set-children-to-items';
 import setIsNeedArrowForOpen from '../utils/set-is-need-arrow';
+import setIsCheckedToItem from '../utils/set-item-is-checked';
 import BaseComponent from './base-component';
 
 export default class SelectComponent extends BaseComponent {
@@ -88,7 +89,7 @@ export default class SelectComponent extends BaseComponent {
     const optionsList = [...this.element.querySelectorAll('option')];
     optionsList.shift();
     optionsList.forEach((option, index) => {
-      if (option.getAttribute('selected') !== null && index !== 0) {
+      if (option.getAttribute('selected') !== null) {
         this.checkedOptions.add(String(this.allOptionsItems[index]?.dataValue));
         option.removeAttribute('selected');
       }
@@ -102,18 +103,21 @@ export default class SelectComponent extends BaseComponent {
       newElement.option = option;
       newElement.isArrowNeeded = false;
       newElement.isOpen = true;
+      newElement.isChecked = false;
       newElement.isShown = true;
       newElement.dataLevel = +(option.getAttribute('data-level') as string);
-      newElement.dataValue = +`${+option.value}${getNextValueForOptionData()}`;
+      newElement.dataValue = `${+option.value}${getNextValueForOptionData()}`;
       newElement.childrenIndex = [];
 
       return newElement;
     });
+    optionsList.shift();
 
     const updateListItemForArrows = setIsNeedArrowForOpen(optionsList);
     const updateListItemWithChildren = setChildrenToItems(updateListItemForArrows);
+    const updateListItemForIsChecked = setIsCheckedToItem(updateListItemWithChildren, this.checkedOptions);
 
-    return updateListItemWithChildren;
+    return updateListItemForIsChecked;
   }
 
   public getAllOptionsAsString(): void | string {

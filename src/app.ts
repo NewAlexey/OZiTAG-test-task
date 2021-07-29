@@ -173,7 +173,7 @@ export default class App {
   private setShownOptionsList(optionValue: string, isOpen: boolean): void {
     const optionsList = [...this.selectComponent.allOptionsItems];
     const updatedOptionsList = optionsList.map((element) => {
-      if (element.dataValue === +optionValue) {
+      if (element.dataValue === optionValue) {
         const updatedElem = element;
         updatedElem.isOpen = isOpen;
 
@@ -183,7 +183,7 @@ export default class App {
       return element;
     });
 
-    const clickedOptionItem = updatedOptionsList.find((element) => element.dataValue === +optionValue) as IOptionItem;
+    const clickedOptionItem = updatedOptionsList.find((element) => element.dataValue === optionValue) as IOptionItem;
 
     this.setChildrenIsOptionsList(clickedOptionItem, optionsList, isOpen);
     this.selectComponent.isShownOptions = false;
@@ -208,6 +208,14 @@ export default class App {
 
   private checkedOptionListItem(clickTarget: HTMLLabelElement): void {
     const optionValue = getOptionValue(clickTarget);
+
+    this.selectComponent.allOptionsItems = this.selectComponent.allOptionsItems.map((element) => {
+      if (optionValue === element.dataValue) {
+        element.isChecked = !element.isChecked;
+      }
+
+      return element;
+    });
 
     if (this.selectComponent.isOptionInCheckedList(optionValue)) {
       this.selectComponent.removeCheckedOption(optionValue);

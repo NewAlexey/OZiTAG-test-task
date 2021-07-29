@@ -87,6 +87,15 @@ html {
     display: flex;
     align-items: center;
 
+    .option-dot {
+      width: 4px;
+      height: 4px;
+      position: absolute;
+      left: 8px;
+      background-color: #035b77;
+      border-radius: 50%;
+    }
+
     .custom-checkbox {
       position: absolute;
       z-index: -1;
@@ -117,6 +126,7 @@ html {
     .custom-checkbox:checked + label::before {
       background-color: #035b77;
       background-image: url('../public/check-mark-icon.svg');
+      z-index: 5;
     }
 
     .background-selected-option {

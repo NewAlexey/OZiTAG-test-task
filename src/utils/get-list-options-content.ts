@@ -6,8 +6,8 @@ const MARGIN_PX_OPTION_LIST_ITEM = 15;
 const MARGIN_PX_IF_ARROW_IS_NEEDED = 25;
 const HEIGHT_PX_VERTICAL_LINE = 45;
 
-function getInputElement(value: number, checkedOptions: Set<string>): string {
-  return checkedOptions.has(String(value))
+function getInputElement(value: string, checkedOptions: Set<string>): string {
+  return checkedOptions.has(value)
     ? `<input type="checkbox" id="value-${value}" class="custom-checkbox" checked="checked">`
     : `<input type="checkbox" id="value-${value}" class="custom-checkbox">`;
 }
@@ -39,7 +39,8 @@ function getOptionListItem(
   return `<div class="option-item">
             ${getInputElement(element.dataValue, checkedOptions)}
             <label for="value-${element.dataValue}" data-value="value-${element.dataValue}" class="${
-            checkedOptions.has(String(element.dataValue)) ? 'background-selected-option' : ''}">
+            checkedOptions.has(element.dataValue) ? 'background-selected-option' : ''}">
+            ${element.isArrowNeeded && element.isOpen && !element.isChecked ? '<div class="option-dot"></div>' : ''}
               <span style="margin-left: ${indent}px; left: ${
               element.isArrowNeeded ? 0 : MARGIN_PX_IF_ARROW_IS_NEEDED}px" 
               data-value="value-${element.dataValue}">
