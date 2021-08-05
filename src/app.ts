@@ -80,7 +80,7 @@ export default class App {
     );
     (this.inputComponent.element.querySelector('input') as HTMLInputElement).addEventListener(
       'input',
-      this.showOptionListAccordingToSearchResult.bind(this)
+      this.handleChangeInputValue.bind(this)
     );
     (this.headerListComponent.element.querySelector('.selected-elements') as HTMLSelectElement).addEventListener(
       'click',
@@ -203,10 +203,7 @@ export default class App {
     return optionsList;
   }
 
-  private showOptionListAccordingToSearchResult(event: Event): void {
-    const inputValue = (event.target as HTMLInputElement).value;
-    const optionsList = this.clearBoldAndIsShownFieldsInOptionsList();
-
+  private showOptionsListAccordingToSearchResult(inputValue: string, optionsList: IOptionItem[]): void {
     if (!inputValue) {
       this.removeOptionListFromScreen();
       const allList = getOptionsList(optionsList, this.optionsListComponent.checkedOptionsData);
@@ -232,6 +229,13 @@ export default class App {
       this.removeOptionListFromScreen();
       this.showOptionsListOnScreen(findedOptionList);
     }
+  }
+
+  private handleChangeInputValue(event: Event): void {
+    const inputValue = (event.target as HTMLInputElement).value;
+    const optionsList = this.clearBoldAndIsShownFieldsInOptionsList();
+
+    this.showOptionsListAccordingToSearchResult(inputValue, optionsList);
   }
 
   private clearHeaderAndSetItemsIsntCheked(): void {
@@ -322,12 +326,10 @@ export default class App {
       this.windowSize = windowSize;
 
       if (this.optionsListComponent.isShownOptions) {
-        this.removeOptionListFromScreen();
-        const optionsList = getOptionsList(
-          this.optionsListComponent.allOptionsItems,
-          this.optionsListComponent.checkedOptionsData
-        );
-        this.showOptionsListOnScreen(optionsList);
+        const inputValue = this.inputComponent.inputElement.value;
+        const optionsList = this.clearBoldAndIsShownFieldsInOptionsList();
+
+        this.showOptionsListAccordingToSearchResult(inputValue, optionsList);
       }
     }
   }
