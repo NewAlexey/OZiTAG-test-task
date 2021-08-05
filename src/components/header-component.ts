@@ -3,6 +3,8 @@ import BaseComponent from './base-component';
 export default class HeaderComponent extends BaseComponent {
   public countCheckedOptions: number;
 
+  private spanCounter: HTMLElement;
+
   public constructor() {
     super('div', ['list-header']);
     this.countCheckedOptions = 0;
@@ -13,10 +15,11 @@ export default class HeaderComponent extends BaseComponent {
     </p>
     `;
     this.hideInformationIfSelectedEmpty();
+    this.spanCounter = this.element.querySelector('span') as HTMLSpanElement;
   }
 
   public setNewValueInCountElement(): void {
-    const spanElement = this.element.querySelector('span') as HTMLSpanElement;
+    const spanElement = this.spanCounter;
     spanElement.innerText = `${this.countCheckedOptions}`;
     this.hideInformationIfSelectedEmpty();
   }

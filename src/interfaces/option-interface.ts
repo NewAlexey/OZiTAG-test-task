@@ -4,7 +4,8 @@ export interface IOptionItem {
   isChecked: boolean;
   isArrowNeeded: boolean;
   isShown: boolean;
+  isBoldNeeded: boolean;
   dataLevel: number;
   dataValue: string;
-  childrenIndex: number[] | null;
+  childrenIndex: IOptionItem[] | null;
 }

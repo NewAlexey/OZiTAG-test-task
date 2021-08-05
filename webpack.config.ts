@@ -1,14 +1,16 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const EsLintPlugin = require('eslint-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import EsLintPlugin from 'eslint-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
+  mode: isProduction ? 'production' : 'development',
   entry: {
     app: './src/index.ts',
   },
@@ -32,6 +34,7 @@ const config = {
     new EsLintPlugin({
       extensions: ['ts', 'js'],
     }),
+    new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [{ from: './public', to: './public' }],
     }),
@@ -42,6 +45,11 @@ const config = {
         test: /\.ts$/i,
         loader: 'ts-loader',
         exclude: ['/node_modules/'],
+      },
+      {
+        test: /\.ts$/i,
+        enforce: 'pre',
+        use: ['source-map-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -57,16 +65,10 @@ const config = {
       },
     ],
   },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.js', 'json'],
   },
 };
 
-module.exports = () => {
-  if (isProduction) {
-    config.mode = 'production';
-  } else {
-    config.mode = 'development';
-  }
-  return config;
-};
+export default config;

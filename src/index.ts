@@ -4,11 +4,14 @@ import './style.scss';
 
 function addNewComponent(): void {
   const appContainer = document.querySelector('.container') as HTMLElement;
-  new App(appContainer);
+  const selectComponent = document.createElement('div');
+  selectComponent.classList.add('select-component');
+  appContainer.append(selectComponent);
+  new App(selectComponent);
 }
 
 window.onload = (): void => {
-  const appContainer = document.querySelector('.container') as HTMLElement;
+  const appContainer = document.querySelector('.select-component') as HTMLElement;
 
   if (!appContainer) throw Error('App root element not found');
 

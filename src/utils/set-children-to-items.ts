@@ -5,7 +5,7 @@ export default function setChildrenToItems(listItem: IOptionItem[]): IOptionItem
     let j = i;
 
     while ((listItem[i]?.dataLevel as number) < (listItem[j + 1]?.dataLevel as number)) {
-      listItem[i]?.childrenIndex?.push(j + 1);
+      ((listItem[i] as IOptionItem).childrenIndex as IOptionItem[]).push(listItem[j + 1] as IOptionItem);
       j += 1;
     }
   }
